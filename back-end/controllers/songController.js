@@ -1,6 +1,6 @@
 const express = require("express");
 const songs = express.Router();
-const { getAllSongs, getSong, createSong, updateSong } = require("../queries/songs");
+const { getAllSongs, getSong, createSong, updateSong, deleteSong } = require("../queries/songs");
 
 
 
@@ -46,5 +46,14 @@ songs.put(
   );
 
 // DELETE
+songs.delete("/:id", async (req, res) => {
+    const { id } = req.params;
+    const deletedSong = await deleteSong(id);
+    if (deletedSong.id) {
+      res.status(200).json(deletedSong);
+    } else {
+      res.status(404).json("Song Not Found");
+    }
+  });
 
 module.exports = songs
